@@ -1,5 +1,5 @@
 # JavaScript Challenge - JavaScript and DOM Manipulation
-Open [link](UFO-level-1/static/js/data.js) to see solution.
+Open [link](https://mirgadir.github.io/JavaScript-challenge/) to see solution.
 
 ## Background
 
