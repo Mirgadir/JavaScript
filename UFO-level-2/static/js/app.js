@@ -7,6 +7,7 @@ var ufoBody = tableUfo.select("tbody");
 var oldInput = d3.select("input");
 // Iterate thtough tableData, add function ufo to call each item
 tableData.forEach(function(ufo) {
+  //d3.event.preventDefault();
   // create rows for each data point
   var rowUfo = ufoBody.append("tr");
   // iterate through each object inside of array and pick values only
@@ -17,21 +18,54 @@ tableData.forEach(function(ufo) {
   });
 });
 
-// Select button and form tags assign listener 
-
-
-
-var selector = d3.select("#selFilter");
-selector.on("change", changeFilter)
-
-function changeFilter() {
+// initial filter table data by date
+var button=d3.select("#filter-btn");
+var form = d3.select("form");
+// listener on Filter Table button click
+button.on("click", runSearch);
+// listener on sumbition with keyboard ENTER button
+form.on("submit", runSearch);
+// define runSearch function to filter table by selected criteria
+function runSearch() {
+    //prevent predefined html events
     d3.event.preventDefault();
-    var dropDownMenu = d3.select("#selFilter");
-    var newFilter = dropDownMenu.node().value;
+    // locate input tag by class
+    var inputElement = d3.select(".form-control");
+    // select input value entered by client
+    var inputValue = inputElement.property("value");
+    //perform data filter
+    var filterTable = tableData.filter(datapoint => datapoint.datetime === inputValue);
+    // log filtered results to make it visible in console
+    console.log(filterTable);
+    // remove previous original data in table
+    ufoBody.selectAll("tr").remove();
+    // iterate through filtered data and update table
+    filterTable.forEach(function(ufo) {
+      // create rows for each data point
+      var rowNew = ufoBody.append("tr");
+      // iterate through each object inside of array and pick values only
+      Object.entries(ufo).forEach(function([key, value]) {
+        // create cells for each data point and add values to it 
+        var cellNew = rowNew.append("td");
+        cellNew.text(value);
+      });
+    });
+}; 
+// add additional filter criterias in drop down menu
+// define selector variable to locate drop down menu 
+var selector = d3.select("#selFilter");
+// create listener to run function changeFilter on drop down list change
+selector.on("change", changeFilter);
+
+// define changeFilter function including runSearch function to filter by selected column
+function changeFilter() {
+    // drop down menu functionality
+    var newFilter = selector.node().value;
     var listInput = d3.select(".list-group-item");
+    // update input tag 
     var newInput = listInput.append('input');
     var oldInput = d3.select("input");
-
+    // switch function to update input tag as per client drop down selection
     switch(newFilter) {
         case "newFilter2":
             oldInput.remove();
@@ -69,27 +103,24 @@ function changeFilter() {
             newInput.attr("placeholder", "1/11/2011");
             break;            
     }
+    // select input tag id after tag update
     var newId = newInput.attr("id");
+    // define button and form to create listener
     var button=d3.select("#filter-btn");
     var form = d3.select("form");
+    // listener on Filter Table button click
     button.on("click", runSearch);
+    // listener on sumbition with keyboard ENTER button
     form.on("submit", runSearch);
+    // define runSearch function to filter table by selected criteria
     function runSearch() {
         //prevent predefined html events
         d3.event.preventDefault();
-        // define filter inputs
-        if (newInput.attr("id") === "datetime"){
-          var inputElement=d3.select("#datetime");
-        }else if (newInput.attr("id") === "city"){
-          var inputElement=d3.select("#city");
-        }else if (newInput.attr("id") === "state"){
-          var inputElement=d3.select("#state");
-        }else if (newInput.attr("id") === "country"){
-          var inputElement=d3.select("#country");
-        }else if (newInput.attr("id") === "shape"){
-          var inputElement=d3.select("#shape");
-        }
+        // locate input tag by class
+        var inputElement = d3.select(".form-control");
+        // select input value entered by client
         var inputValue = inputElement.property("value");
+        //perform data filter
         var filterTable = tableData.filter(datapoint => datapoint[newId] === inputValue);
         // log filtered results to make it visible in console
         console.log(filterTable);
@@ -97,7 +128,6 @@ function changeFilter() {
         ufoBody.selectAll("tr").remove();
         // iterate through filtered data and update table
         filterTable.forEach(function(ufo) {
-            d3.event.preventDefault();
           // create rows for each data point
           var rowNew = ufoBody.append("tr");
           // iterate through each object inside of array and pick values only
@@ -109,8 +139,3 @@ function changeFilter() {
         });
     }; 
 }
-
-
-
-
-
