@@ -73,10 +73,12 @@ function changeFilter() {
     // update input tag 
     var newInput = listInput.append('input');
     var oldInput = d3.select("input");
+    var label = d3.select("label");
     // switch function to update input tag as per client drop down selection
     switch(newFilter) {
         case "newFilter2":
             oldInput.remove();
+            label.text("Enter City");
             newInput.attr("class", "form-control");
             newInput.attr("id", "city");
             newInput.attr("type", "text");
@@ -84,6 +86,7 @@ function changeFilter() {
             break;
         case "newFilter3":
             oldInput.remove();
+            label.text("Enter State");
             newInput.attr("class", "form-control");
             newInput.attr("id", "state");
             newInput.attr("type", "text");
@@ -91,6 +94,7 @@ function changeFilter() {
             break;        
         case "newFilter4":
             oldInput.remove();
+            label.text("Enter Country");
             newInput.attr("class", "form-control");
             newInput.attr("id", "country");
             newInput.attr("type", "text");
@@ -98,6 +102,7 @@ function changeFilter() {
             break;
         case "newFilter5":
             oldInput.remove();
+            label.text("Enter Shape");
             newInput.attr("class", "form-control");
             newInput.attr("id", "shape");
             newInput.attr("type", "text");
@@ -105,6 +110,7 @@ function changeFilter() {
             break;
         default:
             oldInput.remove();
+            label.text("Enter Date");
             newInput.attr("class", "form-control");
             newInput.attr("id", "datetime");
             newInput.attr("type", "text");
