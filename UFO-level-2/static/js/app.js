@@ -26,7 +26,9 @@ button.on("click", runSearch);
 // listener on sumbition with keyboard ENTER button
 form.on("submit", runSearch);
 // define runSearch function to filter table by selected criteria
+var filterTable = [];
 function runSearch() {
+    var filterTable = [];
     //prevent predefined html events
     d3.event.preventDefault();
     // locate input tag by class
@@ -34,7 +36,13 @@ function runSearch() {
     // select input value entered by client
     var inputValue = inputElement.property("value");
     //perform data filter
-    var filterTable = tableData.filter(datapoint => datapoint.datetime === inputValue);
+    if (filterTable.length >= 1){
+      console.log('filtering filtered data');
+      filterTable=filterTable.filter(datapoint => datapoint.datetime === inputValue);
+    }else {
+      console.log('new filter');
+      filterTable = tableData.filter(datapoint => datapoint.datetime === inputValue);
+    }
     // log filtered results to make it visible in console
     console.log(filterTable);
     // remove previous original data in table
@@ -103,42 +111,52 @@ function changeFilter() {
             newInput.attr("placeholder", "1/11/2011");
             break;            
     }
-    // select input tag id after tag update
-    var newId = newInput.attr("id");
-    // define button and form to create listener
-    var button=d3.select("#filter-btn");
-    var form = d3.select("form");
-    // listener on Filter Table button click
-    button.on("click", runSearch);
-    // listener on sumbition with keyboard ENTER button
-    form.on("submit", runSearch);
-    // define runSearch function to filter table by selected criteria
-    function runSearch() {
-        //prevent predefined html events
-        d3.event.preventDefault();
-        // locate input tag by class
-        var inputElement = d3.select(".form-control");
-        // select input value entered by client
-        var inputValue = inputElement.property("value");
-        //perform data filter
-        var filterTable = tableData.filter(datapoint => datapoint[newId] === inputValue);
-        // log filtered results to make it visible in console
-        console.log(filterTable);
-        // remove previous original data in table
-        ufoBody.selectAll("tr").remove();
-        // iterate through filtered data and update table
-        filterTable.forEach(function(ufo) {
-          // create rows for each data point
-          var rowNew = ufoBody.append("tr");
-          // iterate through each object inside of array and pick values only
-          Object.entries(ufo).forEach(function([key, value]) {
-            // create cells for each data point and add values to it 
-            var cellNew = rowNew.append("td");
-            cellNew.text(value);
-          });
-        });
-    }; 
 }
+// select input tag id after tag update
+
+// define button and form to create listener
+var button=d3.select("#filter-btn");
+var form = d3.select("form");
+// listener on Filter Table button click
+button.on("click", runSearch);
+// listener on sumbition with keyboard ENTER button
+form.on("submit", runSearch);
+// define runSearch function to filter table by selected criteria
+var filterTable = [];
+function runSearch() {
+    var newId = d3.select("input").attr("id");
+    
+    //prevent predefined html events
+    d3.event.preventDefault();
+    // locate input tag by class
+    var inputElement = d3.select(".form-control");
+    // select input value entered by client
+    var inputValue = inputElement.property("value");
+    //perform data filter
+    if (filterTable.length >= 1){
+      console.log('filtering filtered data');
+      filterTable = filterTable.filter(datapoint => datapoint[newId] === inputValue);
+    }else {
+      console.log('new filter');
+      filterTable = tableData.filter(datapoint => datapoint[newId] === inputValue);
+    }
+    // log filtered results to make it visible in console
+    console.log(filterTable);
+    // remove previous original data in table
+    ufoBody.selectAll("tr").remove();
+    // iterate through filtered data and update table
+    filterTable.forEach(function(ufo) {
+      // create rows for each data point
+      var rowNew = ufoBody.append("tr");
+      // iterate through each object inside of array and pick values only
+      Object.entries(ufo).forEach(function([key, value]) {
+        // create cells for each data point and add values to it 
+        var cellNew = rowNew.append("td");
+        cellNew.text(value);
+      });
+    });
+}; 
+
 var resButton=d3.select("#reset-btn");
 resButton.on("click", resetFilters);
 
