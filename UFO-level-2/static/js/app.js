@@ -114,7 +114,7 @@ function changeFilter() {
             newInput.attr("class", "form-control");
             newInput.attr("id", "datetime");
             newInput.attr("type", "text");
-            newInput.attr("placeholder", "1/11/2011");
+            newInput.attr("placeholder", "1/1/2010-1/13/2010");
             break;            
     }
 }
