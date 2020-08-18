@@ -138,6 +138,7 @@ function runSearch() {
     var inputElement = d3.select(".form-control");
     // select input value entered by client
     var inputValue = inputElement.property("value");
+    var inputValue = inputValue.toLowerCase();
     //perform data filter
     if (filterTable.length >= 1){
       console.log('filtering filtered data');
