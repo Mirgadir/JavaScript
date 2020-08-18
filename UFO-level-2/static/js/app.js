@@ -139,3 +139,10 @@ function changeFilter() {
         });
     }; 
 }
+var resButton=d3.select("#reset-btn");
+resButton.on("click", resetFilters);
+
+function resetFilters(){
+  location.reload();
+}
+
